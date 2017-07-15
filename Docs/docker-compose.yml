@@ -1,24 +1,27 @@
 version: '3'
 volumes:
   mapskills_data:
+  mapskills_back:
+  mapskills_front: 
 services:
-  nexus:
-    image: thiagolsfortunato/mapskills-nexus
+  jenkins:
+    image: thiagolsfortunato/mapskills-jenkins
     restart: always
-    ports:
-      - 8081:8081
+    volumes:
+      - mapskills-back:/var/lib/jenkins/Build-Mapskills-Back/workspace/mapskills/target/
+      - mapskills-front:/var/lib/jenkins/Build-Mapskills-Front/workspace/mapskills-web/target/
   front:
     image: thiagolsfortunato/mapskills-tomcat8:v1
     restart: always
     volumes:
-      - ./mapskills-web.war:/usr/local/tomcat/webapps/mapskills-web.war:ro
+      - mapskills_front:/usr/local/tomcat/webapps/mapskills-web.war:ro
     ports:
       - 80:8080
   back:
     image: thiagolsfortunato/mapskills-tomcat8:v1
     restart: always
     volumes:
-      - ./mapskills.war:/usr/local/tomcat/webapps/mapskills.war:ro
+      - mapskills_back:/usr/local/tomcat/webapps/mapskills.war:ro
   mysql:
     image: thiagolsfortunato/mapskills-mysql:v1
     restart: always

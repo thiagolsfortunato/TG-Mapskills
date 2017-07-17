@@ -5,25 +5,25 @@ volumes:
   mapskills_front: 
 services:
   jenkins:
-    image: thiagolsfortunato/mapskills-jenkins
+    image: thiagolsfortunato/jenkins
     restart: always
     volumes:
       - mapskills-back:/var/lib/jenkins/Build-Mapskills-Back/workspace/mapskills/target/
       - mapskills-front:/var/lib/jenkins/Build-Mapskills-Front/workspace/mapskills-web/target/
   front:
-    image: thiagolsfortunato/mapskills-tomcat8:v1
+    image: thiagolsfortunato/tomcat8
     restart: always
     volumes:
       - mapskills_front:/usr/local/tomcat/webapps/mapskills-web.war:ro
     ports:
       - 80:8080
   back:
-    image: thiagolsfortunato/mapskills-tomcat8:v1
+    image: thiagolsfortunato/-tomcat8
     restart: always
     volumes:
       - mapskills_back:/usr/local/tomcat/webapps/mapskills.war:ro
   mysql:
-    image: thiagolsfortunato/mapskills-mysql:v1
+    image: thiagolsfortunato/mysql
     restart: always
     volumes:
       - mapskills_data:/var/lib/mysql/mapskills
@@ -35,7 +35,7 @@ services:
     ports:
       - 3306:3306
   lb:
-    image: thiagolsfortunato/mapskills-haproxy:v1
+    image: thiagolsfortunato/haproxy
     restart: always
     environment:
       - STATS_AUTH=mapskills:mapskills
@@ -47,7 +47,7 @@ services:
       - 8080:80
       - 1936:1936
   cadvisor:
-    image: thiagolsfortunato/mapskills-cadvisor
+    image: thiagolsfortunato/cadvisor
     restart: always
     volumes:
       - /:/roofs:ro

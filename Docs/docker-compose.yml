@@ -1,32 +1,36 @@
 version: '3'
 volumes:
-  mapskills_data:
-  mapskills_back:
-  mapskills_front: 
+  mysql:
+  back: {}
+  front: {}
 services:
   jenkins:
-    image: thiagolsfortunato/jenkins
+    image: thiagolsfortunato/mapskills-jenkins
     restart: always
     volumes:
-      - mapskills-back:/var/lib/jenkins/Build-Mapskills-Back/workspace/mapskills/target/
-      - mapskills-front:/var/lib/jenkins/Build-Mapskills-Front/workspace/mapskills-web/target/
+      - back:/mapskills/back:rw
+      - front:/mapskills/front:rw
+    environment:
+      - /var/run/docker.sock:/var/run/docker.sock
+     ports:
+      - 8585:8080
   front:
-    image: thiagolsfortunato/tomcat8
+    image: thiagolsfortunato/mapskills-tomcat8:v1
     restart: always
     volumes:
-      - mapskills_front:/usr/local/tomcat/webapps/mapskills-web.war:ro
+      - front:/usr/local/tomcat/webapps
     ports:
       - 80:8080
   back:
-    image: thiagolsfortunato/-tomcat8
+    image: thiagolsfortunato/mapskills-tomcat8:v1
     restart: always
     volumes:
-      - mapskills_back:/usr/local/tomcat/webapps/mapskills.war:ro
+      - back:/usr/local/tomcat/webapps
   mysql:
-    image: thiagolsfortunato/mysql
+    image: thiagolsfortunato/mapskills-mysql:v1
     restart: always
     volumes:
-      - mapskills_data:/var/lib/mysql/mapskills
+      - mysql:/var/lib/mysql/mapskills
     environment:
       MYSQL_ROOT_PASSWORD: "mapskills"
       MYSQL_DATABASE: "mapskills"
@@ -35,7 +39,7 @@ services:
     ports:
       - 3306:3306
   lb:
-    image: thiagolsfortunato/haproxy
+    image: thiagolsfortunato/mapskills-haproxy:v1
     restart: always
     environment:
       - STATS_AUTH=mapskills:mapskills
@@ -47,7 +51,7 @@ services:
       - 8080:80
       - 1936:1936
   cadvisor:
-    image: thiagolsfortunato/cadvisor
+    image: thiagolsfortunato/mapskills-cadvisor
     restart: always
     volumes:
       - /:/roofs:ro

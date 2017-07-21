@@ -1,35 +1,39 @@
 version: '3'
-volumes:
-  mysql:
-  back: {}
-  front: {}
 services:
   jenkins:
-    image: thiagolsfortunato/mapskills-jenkins
-    restart: always
+    image: thiagolsfortunato/mapskills-jenkins:2.60.2
+    restart: on-failure
     volumes:
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/mapskills/docker-compose.yml:/mapskills/docker-compose.yml
       - back:/mapskills/back:rw
       - front:/mapskills/front:rw
     environment:
-      - /var/run/docker.sock:/var/run/docker.sock
-     ports:
+      DOCKER_SOCKET: /var/run/docker.sock
+      DOCKER_GROUP: dockerhost
+      JENKINS_USER: jenkins
+    ports:
       - 8585:8080
   front:
     image: thiagolsfortunato/mapskills-tomcat8:v1
-    restart: always
+    restart: on-failure
+    network: mapskills
     volumes:
-      - front:/usr/local/tomcat/webapps
+      - front:/usr/local/tomcat/webapps:rw
     ports:
       - 80:8080
   back:
     image: thiagolsfortunato/mapskills-tomcat8:v1
-    restart: always
+    restart: on-failure
+    network: mapskills
+    scale: 3
     volumes:
-      - back:/usr/local/tomcat/webapps
+      - back:/usr/local/tomcat/webapps:rw
   mysql:
     image: thiagolsfortunato/mapskills-mysql:v1
-    restart: always
-    volumes:
+    restart: on-failure
+    volumes: 
       - mysql:/var/lib/mysql/mapskills
     environment:
       MYSQL_ROOT_PASSWORD: "mapskills"
@@ -39,8 +43,9 @@ services:
     ports:
       - 3306:3306
   lb:
-    image: thiagolsfortunato/mapskills-haproxy:v1
-    restart: always
+    image: thiagolsfortunato/mapskills-haproxy:alpine
+    restart: on-failure
+    network: mapskills
     environment:
       - STATS_AUTH=mapskills:mapskills
     links:
@@ -52,7 +57,7 @@ services:
       - 1936:1936
   cadvisor:
     image: thiagolsfortunato/mapskills-cadvisor
-    restart: always
+    restart: on-failure
     volumes:
       - /:/roofs:ro
       - /var/run:/var/run:rw
@@ -60,3 +65,15 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       - 8888:8080
+networks:
+  mapskills:
+      driver: overlay
+      external: true
+      ipam:
+        config:
+          - subnet: 172.17.0.0/16
+            gateway: 172.17.1.1 
+volumes:
+  mysql:
+  back: {}
+  front: {}

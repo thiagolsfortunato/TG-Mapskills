@@ -19,3 +19,13 @@ password: mapskills
 user: mapskills
 password: mapskills
 - cAdivisor 8888:8080
+
+mapskills
+Centro Paula Souza
+thiago.fortunato@fatec.sp.gov.br
+
+cp $JENKINS_HOME/workspace/Build-Mapskills-Back/target/mapskills.war /mapskills/back
+
+clean install -Dliquibase.should.run=false -Pazure
+
+docker stack deploy -c docker-compose.yml mapskills

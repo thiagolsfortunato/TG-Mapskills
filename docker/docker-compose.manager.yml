@@ -1,0 +1,31 @@
+version: '3'
+services:
+  jenkins:
+    image: thiagolsfortunato/mapskills-jenkins:2.60.2
+    container_name: mapskills-jenkins
+    restart: on-failure
+    volumes:
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/mapskills/docker-compose.yml:/mapskills/docker-compose.yml
+      - back:/mapskills/back:rw
+      - front:/mapskills/front:rw
+    environment:
+      DOCKER_SOCKET: /var/run/docker.sock
+      DOCKER_GROUP: dockerhost
+      JENKINS_USER: jenkins
+    ports:
+      - 8585:8080
+  cadvisor:
+    image: thiagolsfortunato/mapskills-cadvisor
+    container_name: mapskills-cadivisor
+    volumes:
+      - /:/roofs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8888:8080
+volumes:
+  back: 
+  front:

@@ -24,8 +24,10 @@ mapskills
 Centro Paula Souza
 thiago.fortunato@fatec.sp.gov.br
 
-cp $JENKINS_HOME/workspace/Build-Mapskills-Back/target/mapskills.war /mapskills/back
-
 clean install -Dliquibase.should.run=false -Pazure
+clean install - mapskill-web/pom.xml
 
-docker stack deploy -c docker-compose.yml mapskills
+cp /var/jenkins_home/workspace/Build-Mapskills-Back/target/mapskills.war /mapskills/back
+cp var/jenkins_home/workspace/Build-Mapskills-Web/mapskills-web/target/mapskills-web.war /mapskills/front
+
+docker-compose up scale back=3

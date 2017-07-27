@@ -41,7 +41,8 @@ services:
       - 8080:80
       - 1936:1936
 volumes:
-  mysql:
+  manager_mysql:
+    external: true
   manager_back:
     external: true
   manager_front:

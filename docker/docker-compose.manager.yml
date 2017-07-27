@@ -27,5 +27,6 @@ services:
     ports:
       - 8888:8080
 volumes:
+  mysql:
   back: 
   front:

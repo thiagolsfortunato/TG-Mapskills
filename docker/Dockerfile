@@ -11,7 +11,7 @@ RUN apt-get update \
 
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 
-RUN curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+RUN curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 RUN chmod +x /usr/local/bin/docker-compose
 
 RUN mkdir /mapskills && \
@@ -22,4 +22,4 @@ RUN chown -R jenkins:jenkins /mapskills
 
 USER jenkins
 
-EXPOSE 8585
+EXPOSE 8585s

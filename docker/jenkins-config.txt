@@ -1,0 +1,68 @@
+# obter senha de acesso jenkins
+docker exec -it mapskills-jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+- Install Suggested plugins
+
+- First User Admin
+Nome do Usuário: mapskills
+Senha: mapskills
+Confirmar Senha: mapskills
+Nome Completo: Centro Paula Souza
+Endereço de Email: thiago.fortunato@fatec.sp.gov.br
+
+- Gerenciar Jenkins
+  - Global Tool Configuration
+    - JDK
+      nome: jdk8
+      selecionar: Eu concordo com a licença do Java SE Development Kit
+      informar usuário/senha oracle
+    - MAVEN
+      nome: mvn 3.5
+  SALVAR
+
+- Jobs
+  - Build-Mapskills-Back
+      GitHub Project: https://github.com/Marcelo-Inacio/mapskills
+    - Gerenciamento de Codigo:
+        Git: https://github.com/Marcelo-Inacio/mapskills.git
+    - Trigger de Build:
+        GitHub hook trigger for GITScm polling
+    - Build:
+        Maven: 
+          Versão do Maven: mvn 3.5
+          Goal: clean install -Dliquibase.should.run=false -Pazure
+
+  - Build-Mapskills-Front
+      GitHub Project: https://github.com/Marcelo-Inacio/mapskills-web
+    - Gerenciamento de Codigo:
+      Git: https://github.com/Marcelo-Inacio/mapskills-web.git
+    - Trigger de Build:
+        GitHub hook trigger for GITScm polling
+    - Build:
+      Maven: 
+        Versão do Maven: mvn 3.5
+        Goal: clean install
+        POM: mapskills-web/pom.xml
+
+  - Copy Artifact Mapskills Back
+      GitHub Project: https://github.com/Marcelo-Inacio/mapskills
+    - Trigger de Build:
+        Construir após a construção de outros projetos: Build-Mapkills-Back
+    - Build:
+        Executar Shell: 
+          sudo cp /var/jenkins_home/workspace/Build-Mapskills-Back/target/mapskills.war /mapskills/back
+
+  - Copy Artifact Mapskills Back
+      GitHub Project: https://github.com/Marcelo-Inacio/mapskills-web
+    - Trigger de Build:
+        Construir após a construção de outros projetos: Build-Mapkills-Front
+    - Build:
+        Executar Shell: 
+          sudo cp /var/jenkins_home/workspace/Build-Mapskills-Front/mapskills-web/target/mapskills-web.war /mapskills/front
+
+  - Deploy Mapskills 
+    - Trigger de Build:
+        Construir após a construção de outros projetos: Copy Artifact Mapskills Back, Copy Artifact Mapskills Web
+    - Build:
+        Executar Shell:
+          sudo docker-compose -f /opt/mapskills/docker-compose.yml up -d --scale back=5

@@ -7,6 +7,11 @@ GRANT ALL PRIVILEGES ON mapskills.* TO 'mapskills'@'%' IDENTIFIED BY 'mapskills'
 GRANT ALL PRIVILEGES ON mapskills.* TO 'mapskills'@'localhost' IDENTIFIED BY 'mapskills' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
+<<<<<<< HEAD
+exit
+=======
+exit
+
 rename table administrator to ADMINISTRATOR;
 rename table alternative to ALTERNATIVE;
 rename table course to COURSE;
@@ -22,3 +27,4 @@ rename table skill to SKILL;
 rename table student to STUDENT;
 rename table student_question_event to STUDENT_QUESTION_EVENT;
 rename table user to USER;
+>>>>>>> 4eaeef8fa2f6ea1f45420e4d6a8e53fde1bdb5a7

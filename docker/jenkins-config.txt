@@ -65,4 +65,4 @@ Endereço de Email: thiago.fortunato@fatec.sp.gov.br
         Construir após a construção de outros projetos: Copy Artifact Mapskills Back, Copy Artifact Mapskills Web
     - Build:
         Executar Shell:
-          sudo docker-compose -f /opt/mapskills/docker-compose.yml up -d --scale back=5
+          sudo docker-compose -f /mapskills/docker-compose.yml up -d --scale back=5

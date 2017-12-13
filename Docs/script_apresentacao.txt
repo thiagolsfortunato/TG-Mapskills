@@ -1,26 +1,31 @@
 1- Apresentação
 
 2- Introducao
-	Projeto Permanência (CPS, 2016)
+	- Projeto Permanência (CPS, 2016)
 		- Finalidade de dirimir o indice de desistencia dos cursos no ambito do CPS
-	Escritório de Carreiras (Fatec SJC, 2017)
-		- Finalidade de aproximar o mercado de trabalho ao aluno da FATEC sjc
+	- Escritório de Carreiras (Fatec SJC, 2017)
+		- Finalidade de preparar e aproximar o mercado de trabalho ao aluno da FATEC sjc
 		- Divido em etapas, e uma das etapas consite em mapear as competências
 		- Plataforma para Jogos de Mapeamento de Competencias (Inácio, 2017)
 			- Plataforma onde é criado um jogo que possibilita o mapeamento de competencias através de perguntas e respostas.
 
 3- Problema
-	Falta de pessoal para dar suporte a todas aplicações implantadas no Centro Paula Souza;
-	Gerenciar a plataforma de forma independente;
-	É necessário garantir que a plataforma esteja sempre disponível;
+	- Falta de pessoal para dar suporte a todas aplicações implantadas no Centro Paula Souza;
+	- Gerenciar a plataforma de forma independente;
+	- É necessário garantir que a plataforma esteja sempre disponível;
 
 4- Objetivo
-	Prover uma arquitetura que de suporte a plataforma, Qualidade, Agilidade, Estabilidade, Integração Contínua;
-	Disponibilizar uma arquitetura que tenha suporte a alta demanda de requisições num ambiente com pouco recurso computacional e pessoal.
+	- Prover uma arquitetura que de suporte a plataforma, 
+		- Qualidade
+		- Agilidade
+		- Estabilidade
+		- Escalabilidade
+		- Integração Contínua
+	- Disponibilizar uma arquitetura que tenha suporte a alta demanda de requisições num ambiente com pouco recurso computacional e pessoal.
 
 5- Requisitos
 	- Maquina Virtual
-		- Cloud Azure;
+		- Seja disponibilizada na Cloud Microsoft Azure;
 		- Escalável;
 		- Acesso Remoto por usuário e senha;
 	- Servidor Front e Back 
@@ -31,7 +36,7 @@
 	- Servidor de Banco de Dados
 		- Armazenar informaçõe do jogo, como usuario, instituições, cursos, e jogos;
 		- Prover arquitetura que possibilita a criação de relatórios;
-		- Usuário com permissões de execução de comando DDL e DCL na base de dados da plataforma;
+		- Usuário com permissões de execução de comando DDL (Linguagem de Definição de Dados) e DML (Linguagem de Manipulação de Dados) na base de dados da plataforma;
 	- Balanceador de Carga
 		- Controlar a quantidade de acesso ao servidor de back-end;
 		- Escalonar o servico de back-end, redirecionando ao servidor com menos carga;
@@ -63,6 +68,7 @@
 
 6- Desenvolvimento
 	- Tecnologias Utilizadas
+		- Azure: Plataforma na nuvem que hospeda o servidor que implanta a plataforma.
 		- Docker: Plataforma para prover a aquitetura
 		- Java: suporte a aplicação
 		- Tomcat: Servidor de Back-End e Front-End
@@ -80,7 +86,7 @@
 		- Java versão 1.8;
 		- Contém a aplicação de back-end mapskills.war;
 		- URL de acesso a API:http://ip_do_host:8080/mapskills
-	- Mapskills-Back
+	- Mapskills-Front
 		- Tomcat 8.5
 		- Java versão 1.8;
 		- Contém o projeto de interface de web mapskills-web.war;
@@ -116,11 +122,11 @@
 		- Volumes
 			Tem a finalidade de persistir ou compartilhar dados sensíveis a plataforma.
 			- Mapskills-Mysql: persistir dados no host 
-			- Mapskills-Cadvisor: compartilhar informações do host com o container.
+			- Mapskills-Cadvisor: compartilhar informações do host com o container. Ex: "/sys", "/var/run".
 			- Mapskills-Jenkins: 
 				- Compartilhamento entre os container Mapskills-Back e Mapskills-Front
 				- Compartilhamento do arquivo docker-compose.yaml para dentro do container
-				- Compartilhamento de informações do host com o container.
+				- Compartilhamento de informações do host com o container. Ex: "/var/lib/docker".
 	- Mapskills-Jenkins:
 		 Responsável por executar os processos de integração contínua
 	 	- Jobs:
@@ -144,3 +150,14 @@
 	Experimento 2
 		- Atualização de Versão do projeto, recriação do banco
 		- Divisão da arquitetura em dois arquivos.
+8- Trabalhos Futuros:
+	- Alterar o Servidor de Controle de Versão para o Gitlab;
+	- Deixar o arquivo application.properties flexível, para viabilizar a configuração dos servidor de arquivos (imagens).
+	- Separar o Servidor de Banco de Dados
+	- Implementar uma arquitetura de clusters utilizando o Docker Swarm ou Kubernets.
+9- Agradecimento
+	- Deus
+	- Banca
+	- Prof Sakauw
+	- Prof Fatec
+	- Amigos que fiz no curso.

@@ -1,6 +1,6 @@
-  version: '3'
+version: '3'
 services:
-  # Container Tomcat8 composto por mapskills-web.war (Front-End)
+  # Container Tomcat8 mapskills-web.war (Front-End)
   front:
     image: thiagolsfortunato/mapskills-tomcat8:v1
     restart: on-failure
@@ -8,7 +8,7 @@ services:
       - manager_front:/usr/local/tomcat/webapps:rw
     ports:
       - 80:8080
-  # Container Tomcat8 composto por mapskills.war (Back-End)
+  # Container Tomcat8 mapskills.war (Back-End)
   back:
     image: thiagolsfortunato/mapskills-tomcat8:v1
     restart: on-failure
@@ -16,7 +16,7 @@ services:
       - mapskills-mysql
     volumes:
       - manager_back:/usr/local/tomcat/webapps:rw
-  # Container Haproxy responsavel pelo Load-Balance do Back-End
+  # Container Haproxy Load-Balance do Back-End
   lb:
     image: thiagolsfortunato/mapskills-haproxy:v1
     restart: on-failure

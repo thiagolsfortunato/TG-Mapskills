@@ -62,7 +62,7 @@
 	- Arquitetura
 		- Clientes acessam a Interface Web, as requisições trafegarão pelo Load Balance e são direcionadas ao Servidor de back-end
 		- Back end se comunica com o banco de dados
-		- Integração contínua para realizar os processos de integração contínua
+		- Ferramenta de Integração Contínua 
 		- Interface de Monitoramento dos serviços necessários a plataforma e recursos do servidor
 		- Maquina Virtual alocada no Azure para que hospede todos serviços.
 
